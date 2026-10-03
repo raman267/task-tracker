@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Full-Stack Project</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 500px; margin: 50px auto; text-align: center; }
+        ul { list-style-type: none; padding: 0; }
+        li { background: #f4f4f4; padding: 10px; margin: 50px 0; border-radius: 5px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <h1>Live DevOps Task Tracker</h1>
+    <p>These tasks are being fetched live from my Node.js backend server!</p>
+    
+    <ul id="task-list">
+        <!-- JavaScript will insert the backend tasks here dynamically -->
+    </ul>
+
+    <script>
+        // This function requests data from your running backend server
+        async function loadTasksFromBackend() {
+            try {
+                // Fetch data from the URL running in your terminal
+                const response = await fetch('http://localhost:5000/api/tasks');
+                const tasks = await response.json();
+                
+                const listElement = document.getElementById('task-list');
+                listElement.innerHTML = ''; // Clear out the layout
+
+                // Loop through the data array we wrote in server.js
+                tasks.forEach(task => {
+                    const li = document.createElement('li');
+                    li.textContent = task.text;
+                    listElement.appendChild(li);
+                });
+            } catch (error) {
+                console.error("Could not connect to the backend server:", error);
+            }
+        }
+
+        // Run this script automatically as soon as the webpage loads
+        loadTasksFromBackend();
+    </script>
+</body>
+</html>
